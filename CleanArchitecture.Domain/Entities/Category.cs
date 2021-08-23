@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CleanArchitecture.Domain.Entities
 {
-    public sealed class Category : Entity
+    public sealed class Category : BaseEntity
     {
         public string Name { get; private set; }
 

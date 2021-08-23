@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Domain.Interfaces.Repository
 {
-    public interface IRepository<T> where T : Entity
+    public interface IRepository<T> where T : BaseEntity
     {
         Task<T> InsertAsync(T item);
         Task<T> UpdateAsync(T item);

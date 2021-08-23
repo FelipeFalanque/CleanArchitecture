@@ -8,4 +8,12 @@
     <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Identity\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.9" />
+  </ItemGroup>
+
 </Project>

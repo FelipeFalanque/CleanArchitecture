@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Domain.Entities
 {
-    public sealed class Product : Entity
+    public sealed class Product : BaseEntity
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
