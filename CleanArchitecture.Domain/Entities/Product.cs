@@ -22,6 +22,19 @@ namespace CleanArchitecture.Domain.Entities
             ValidateDomain(name, description, price, stock, image);
         }
 
+        public Product(int id, string name, string description, decimal price, int stock, string image, Category category)
+        {
+            DomainExceptionValidation.When(id < 0, "Invalid Id value.");
+            Id = id;
+            ValidateDomain(name, description, price, stock, image);
+
+            if (category != null)
+            {
+                CategoryId = category.Id;
+                Category = category;
+            }
+        }
+
         public void Update(string name, string description, decimal price, int stock, string image, int categoryId)
         {
             ValidateDomain(name, description, price, stock, image);
