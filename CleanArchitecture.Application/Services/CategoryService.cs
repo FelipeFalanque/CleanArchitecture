@@ -3,7 +3,9 @@ using CleanArchitecture.Application.DTOs;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces.Repository;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Services
@@ -11,10 +13,12 @@ namespace CleanArchitecture.Application.Services
     public class CategoryService : ICategoryService
     {
         private ICategoryRepository _categoryRepository;
+        private IProductRepository _productRepository;
         private readonly IMapper _mapper;
-        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
+        public CategoryService(ICategoryRepository categoryRepository, IProductRepository productRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
             _mapper = mapper;
         }
 
@@ -44,7 +48,12 @@ namespace CleanArchitecture.Application.Services
 
         public async Task Remove(int? id)
         {
-            await _categoryRepository.DeleteAsync(id.Value);
+            var products = await _productRepository.SelectByCategoryIdAsync(id.Value);
+
+            if (products == null || products.Count() == 0)
+                await _categoryRepository.DeleteAsync(id.Value);
+            else
+                throw new Exception("category cannot be deleted, but it is necessary to delete the linked products the same");
         }
     }
 }

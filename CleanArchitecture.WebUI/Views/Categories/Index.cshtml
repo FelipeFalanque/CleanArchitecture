@@ -33,7 +33,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+                <tr id="row_@item.Id">
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
@@ -46,12 +46,42 @@
                             <span class="fas fa-search">Details</span>
                         </a>
 
-                        <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-danger">
+                        <button class="btn btn-danger" onclick="DeleteCategory(@item.Id);">
                             <span class="fas fa-trash-alt">Delete</span>
-                        </a>
+                        </button>
+
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section scripts {
+
+    <script>
+        function DeleteCategory(idCategory) {
+            bootbox.confirm('You want to delete the item?', function (confirmed) {
+                if (confirmed) {
+                    SendCategoryDelete(new Number(idCategory));
+                }
+            });
+        }
+        function SendCategoryDelete(idCategory) {
+            $.post(
+                'Categories/Delete',
+                { id: idCategory },
+                function(data, status, xhr) {
+                    console.log('status: ' + status + ', data: ' + data);
+                })
+                .done(function () {
+                    $('#row_' + idCategory).remove();
+                    console.log('Request done!');
+                })
+                .fail(function (jqxhr, settings, ex) {
+                    bootbox.alert(jqxhr.responseJSON.detail);
+                });
+        }
+    </script>
+
+}

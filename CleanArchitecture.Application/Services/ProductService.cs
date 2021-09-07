@@ -36,9 +36,7 @@ namespace CleanArchitecture.Application.Services
 
         public async Task<ProductDTO> GetProductCategory(int? id)
         {
-            // TODO : Product list with category loaded
-            // TODO : Lista de produtos com categoria carregada
-            var productEntity = await _productRepository.SelectAsync(id.Value);
+            var productEntity = await _productRepository.SelectEagerAsync(id.Value);
             return _mapper.Map<ProductDTO>(productEntity);
         }
 

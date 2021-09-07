@@ -38,5 +38,59 @@ namespace CleanArchitecture.WebUI.Controllers
 
             return View(category);
         }
+        
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var categoryDTO = await _categoryService.GetById(id.Value);
+
+            if (categoryDTO == null)
+                return NotFound();
+
+            return View(categoryDTO);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Edit(CategoryDTO category)
+        {
+            if (ModelState.IsValid)
+            {
+                await _categoryService.Update(category);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(category);
+        }
+        
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var categoryDTO = await _categoryService.GetById(id.Value);
+
+            if (categoryDTO == null)
+                return NotFound();
+
+            return View(categoryDTO);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _categoryService.Remove(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
     }
 }
