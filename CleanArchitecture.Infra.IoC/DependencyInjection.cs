@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Services;
 using CleanArchitecture.Application.Mappings;
+using CleanArchitecture.Domain.Account;
+using CleanArchitecture.Infra.Data.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace CleanArchitecture.Infra.IoC
 {
@@ -19,8 +22,18 @@ namespace CleanArchitecture.Infra.IoC
              options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"
             ), b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+                     options.AccessDeniedPath = "/Account/Login");
+
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+
+            services.AddScoped<IAuthenticate, AuthenticateService>();
+            services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
