@@ -20,19 +20,19 @@ namespace CleanArchitecture.Application.Tests.Category
         public async Task It_Is_Possible_To_Execute_The_GetCategories_Method()
         {
             _serviceMock = new Mock<ICategoryService>();
-            _serviceMock.Setup(m => m.GetCategories()).ReturnsAsync(new List<CategoryDTO>() { new CategoryDTO() { Id = 1, Name = "Name 1"}, new CategoryDTO() { Id = 2, Name = "Name 2" } });
+            _serviceMock.Setup(m => m.GetCategoriesAsync()).ReturnsAsync(new List<CategoryDTO>() { new CategoryDTO() { Id = 1, Name = "Name 1"}, new CategoryDTO() { Id = 2, Name = "Name 2" } });
             _service = _serviceMock.Object;
 
-            var result = await _service.GetCategories();
+            var result = await _service.GetCategoriesAsync();
             Assert.NotNull(result);
             Assert.True(result.Count() == 2);
 
             var _listResult = new List<CategoryDTO>();
             _serviceMock = new Mock<ICategoryService>();
-            _serviceMock.Setup(m => m.GetCategories()).ReturnsAsync(_listResult.AsEnumerable);
+            _serviceMock.Setup(m => m.GetCategoriesAsync()).ReturnsAsync(_listResult.AsEnumerable);
             _service = _serviceMock.Object;
 
-            var _resultEmpty = await _service.GetCategories();
+            var _resultEmpty = await _service.GetCategoriesAsync();
             Assert.Empty(_resultEmpty);
             Assert.True(_resultEmpty.Count() == 0);
 

@@ -1,6 +1,7 @@
-﻿using CleanArchitecture.Domain.Account;
+﻿using CleanArchitecture.Infra.Data.Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infra.Data.Identity
 {
@@ -16,7 +17,7 @@ namespace CleanArchitecture.Infra.Data.Identity
             _userManager = userManager;
         }
 
-        public void SeedUsers()
+        public async Task SeedUsers()
         {
             if (_userManager.FindByEmailAsync("usuario@localhost").Result == null)
             {
@@ -60,7 +61,7 @@ namespace CleanArchitecture.Infra.Data.Identity
 
         }
 
-        public void SeedRoles()
+        public async Task SeedRoles()
         {
             if (!_roleManager.RoleExistsAsync("User").Result)
             {

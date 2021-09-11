@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Domain.Interfaces.Repository
 {
-    public interface IProductRepository : IRepository<Product>
+    public interface IProductRepository : IBaseRepository<Product>
     {
         Task<Product> SelectEagerAsync(int id);
 

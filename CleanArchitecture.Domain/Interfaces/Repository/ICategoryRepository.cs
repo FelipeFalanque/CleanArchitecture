@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Domain.Interfaces.Repository
 {
-    public interface ICategoryRepository :IRepository<Category>
+    public interface ICategoryRepository : IBaseRepository<Category>
     {
     }
 }

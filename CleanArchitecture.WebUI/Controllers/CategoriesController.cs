@@ -20,7 +20,7 @@ namespace CleanArchitecture.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categories = await _categoryService.GetCategories();
+            var categories = await _categoryService.GetCategoriesAsync();
             return View(categories);
         }
         
@@ -34,7 +34,7 @@ namespace CleanArchitecture.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _categoryService.Add(category);
+                await _categoryService.AddAsync(category);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -46,7 +46,7 @@ namespace CleanArchitecture.WebUI.Controllers
             if (id == null)
                 return NotFound();
 
-            var categoryDTO = await _categoryService.GetById(id.Value);
+            var categoryDTO = await _categoryService.GetByIdAsync(id.Value);
 
             if (categoryDTO == null)
                 return NotFound();
@@ -59,7 +59,7 @@ namespace CleanArchitecture.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _categoryService.Update(category);
+                await _categoryService.UpdateAsync(category);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -72,7 +72,7 @@ namespace CleanArchitecture.WebUI.Controllers
             if (id == null)
                 return NotFound();
 
-            var categoryDTO = await _categoryService.GetById(id.Value);
+            var categoryDTO = await _categoryService.GetByIdAsync(id.Value);
 
             if (categoryDTO == null)
                 return NotFound();
@@ -81,11 +81,12 @@ namespace CleanArchitecture.WebUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _categoryService.Remove(id);
+                await _categoryService.RemoveAsync(id);
 
                 return Ok();
             }

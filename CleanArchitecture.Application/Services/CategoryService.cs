@@ -22,31 +22,31 @@ namespace CleanArchitecture.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CategoryDTO>> GetCategories()
+        public async Task<IEnumerable<CategoryDTO>> GetCategoriesAsync()
         {
             var categoriesEntity = await _categoryRepository.SelectAsync();
             return _mapper.Map<IEnumerable<CategoryDTO>>(categoriesEntity);
         }
 
-        public async Task<CategoryDTO> GetById(int? id)
+        public async Task<CategoryDTO> GetByIdAsync(int? id)
         {
             var categoryEntity = await _categoryRepository.SelectAsync(id.Value);
             return _mapper.Map<CategoryDTO>(categoryEntity);
         }
 
-        public async Task Add(CategoryDTO categoryDto)
+        public async Task AddAsync(CategoryDTO categoryDto)
         {
             var categoryEntity = _mapper.Map<Category>(categoryDto);
             await _categoryRepository.InsertAsync(categoryEntity);
         }
 
-        public async Task Update(CategoryDTO categoryDto)
+        public async Task UpdateAsync(CategoryDTO categoryDto)
         {
             var categoryEntity = _mapper.Map<Category>(categoryDto);
             await _categoryRepository.UpdateAsync(categoryEntity);
         }
 
-        public async Task Remove(int? id)
+        public async Task RemoveAsync(int? id)
         {
             var products = await _productRepository.SelectByCategoryIdAsync(id.Value);
 

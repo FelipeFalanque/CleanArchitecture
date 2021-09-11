@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanArchitecture.Domain.Account
+namespace CleanArchitecture.Infra.Data.Identity.Interfaces
 {
     public interface IAuthenticate
     {

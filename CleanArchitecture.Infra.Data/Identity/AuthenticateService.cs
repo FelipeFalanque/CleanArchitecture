@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Account;
+﻿using CleanArchitecture.Infra.Data.Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

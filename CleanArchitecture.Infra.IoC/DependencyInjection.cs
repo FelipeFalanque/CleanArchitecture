@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Services;
 using CleanArchitecture.Application.Mappings;
-using CleanArchitecture.Domain.Account;
 using CleanArchitecture.Infra.Data.Identity;
 using Microsoft.AspNetCore.Identity;
+using CleanArchitecture.Infra.Data.Identity.Interfaces;
 
 namespace CleanArchitecture.Infra.IoC
 {
@@ -37,6 +37,8 @@ namespace CleanArchitecture.Infra.IoC
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUserService, UserService>();
+
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
             return services;

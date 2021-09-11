@@ -1,4 +1,4 @@
-using CleanArchitecture.Domain.Account;
+using CleanArchitecture.Infra.Data.Identity.Interfaces;
 using CleanArchitecture.Infra.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

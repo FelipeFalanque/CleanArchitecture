@@ -1,8 +1,16 @@
-﻿@if (Context.User.Identity.IsAuthenticated)
+﻿@using CleanArchitecture.WebUI.Helpers.Extensions;
+
+@if (Context.User.Identity.IsAuthenticated)
 {
     <li class="nav-item">
-        <a class="nav-link text-capitalize" asp-area="" asp-controller="Account" asp-action="Logout"
-           style="color: blue">@Context.User.Identity.Name - Logout</a>
+        <a class="nav-link text-capitalize text-dark" href="#">
+            @Context.User.Identity.GetIdentityName()
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-capitalize" asp-area="" asp-controller="Account" asp-action="Logout">
+            Logout
+        </a>
     </li>
 }
 else

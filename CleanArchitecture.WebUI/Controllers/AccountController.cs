@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Account;
+﻿using CleanArchitecture.Infra.Data.Identity.Interfaces;
 using CleanArchitecture.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;

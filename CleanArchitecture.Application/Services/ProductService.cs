@@ -22,38 +22,38 @@ namespace CleanArchitecture.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetProducts()
+        public async Task<IEnumerable<ProductDTO>> GetProductsAsync()
         {
             var productsEntity = await _productRepository.SelectAsync();
             return _mapper.Map<IEnumerable<ProductDTO>>(productsEntity);
         }
 
-        public async Task<ProductDTO> GetById(int? id)
+        public async Task<ProductDTO> GetByIdAsync(int? id)
         {
             var productEntity = await _productRepository.SelectAsync(id.Value);
             return _mapper.Map<ProductDTO>(productEntity);
         }
 
-        public async Task<ProductDTO> GetProductCategory(int? id)
+        public async Task<ProductDTO> GetProductCategoryAsync(int? id)
         {
             var productEntity = await _productRepository.SelectEagerAsync(id.Value);
             return _mapper.Map<ProductDTO>(productEntity);
         }
 
-        public async Task Add(ProductDTO productDto)
+        public async Task AddAsync(ProductDTO productDto)
         {
             var productEntity = _mapper.Map<Product>(productDto);
             await _productRepository.InsertAsync(productEntity);
         }
 
-        public async Task Update(ProductDTO productDto)
+        public async Task UpdateAsync(ProductDTO productDto)
         {
 
             var productEntity = _mapper.Map<Product>(productDto);
             await _productRepository.UpdateAsync(productEntity);
         }
 
-        public async Task Remove(int? id)
+        public async Task RemoveAsync(int? id)
         {
             await _productRepository.DeleteAsync(id.Value);
         }

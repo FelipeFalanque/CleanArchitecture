@@ -1,0 +1,112 @@
+﻿@model IEnumerable<UserViewModel>
+
+@{
+    ViewData["Title"] = "Users Management";
+}
+<style>
+    .modal-lg {
+        max-width: 80%;
+    }
+</style>
+<div>
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <div class="pull-left">
+                <a asp-action="Create" class="btn btn-sm btn-primary">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Register New
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="row_@item.Id">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-sm btn-warning">
+                            <i class="fa fa-pencil" aria-hidden="true"></i> Edit
+                        </a>
+
+                        <a asp-action="Details" asp-route-id="@item.Id" title="Details" class="btn btn-sm btn-primary">
+                            <i class="fa fa-th-list" aria-hidden="true"></i> Details
+                        </a>
+
+                        <button class="btn btn-sm btn-danger" onclick="DeleteUser(@item.Id);">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+
+    <script>
+        function DeleteUser(idUser) {
+            bootbox.confirm('You want to delete the user?', function (confirmed) {
+                if (confirmed) {
+                    SendUserDelete(idUser);
+                }
+            });
+        }
+        function SendUsertDelete(idUser) {
+            $.post(
+                'Users/Delete',
+                { id: idUser },
+                function(data, status, xhr) {
+                    console.log('status: ' + status + ', data: ' + data);
+                })
+                .done(function () {
+                    $('#row_' + idUser).remove();
+                    console.log('Request done!');
+                })
+                .fail(function (jqxhr, settings, ex) {
+                    switch (jqxhr.status) {
+                        case 500:
+                            bootbox.alert("<text class=\"text-danger\">" + jqxhr.responseJSON.detail + "</text>");
+                            break;
+                        case 403:
+                            bootbox.alert("<text class=\"text-danger\">You are not allowed to perform this operation</text>");
+                            break;
+                        default:
+                            console.log(jqxhr);
+                            break;
+                    }
+                });
+        }
+    </script>
+
+}

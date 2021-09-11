@@ -1,5 +1,8 @@
 ﻿using CleanArchitecture.Application.DTOs;
 using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Domain.Interfaces.Repository;
+using CleanArchitecture.Infra.Data.Identity;
+using CleanArchitecture.WebUI.Helpers.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -29,14 +32,14 @@ namespace CleanArchitecture.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var products = await _productService.GetProducts();
+            var products = await _productService.GetProductsAsync();
             return View(products);
         }
 
         public async Task<IActionResult> Create()
         {
             ViewBag.CategoryId =
-                new SelectList(await _categoryService.GetCategories(), "Id", "Name");
+                new SelectList(await _categoryService.GetCategoriesAsync(), "Id", "Name");
 
             return View();
         }
@@ -46,12 +49,12 @@ namespace CleanArchitecture.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _productService.Add(product);
+                await _productService.AddAsync(product);
                 return RedirectToAction(nameof(Index));
             }
 
             ViewBag.CategoryId =
-                new SelectList(await _categoryService.GetCategories(), "Id", "Name");
+                new SelectList(await _categoryService.GetCategoriesAsync(), "Id", "Name");
 
             return View(product);
         }
@@ -61,13 +64,13 @@ namespace CleanArchitecture.WebUI.Controllers
             if (id == null)
                 return NotFound();
 
-            var productDTO = await _productService.GetById(id.Value);
+            var productDTO = await _productService.GetByIdAsync(id.Value);
 
             if (productDTO == null)
                 return NotFound();
 
             ViewBag.CategoryId =
-                new SelectList(await _categoryService.GetCategories(), "Id", "Name");
+                new SelectList(await _categoryService.GetCategoriesAsync(), "Id", "Name");
 
             return View(productDTO);
         }
@@ -77,7 +80,7 @@ namespace CleanArchitecture.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _productService.Update(product);
+                await _productService.UpdateAsync(product);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -90,7 +93,7 @@ namespace CleanArchitecture.WebUI.Controllers
             if (id == null)
                 return NotFound();
 
-            var productDTO = await _productService.GetProductCategory(id.Value);
+            var productDTO = await _productService.GetProductCategoryAsync(id.Value);
 
             if (productDTO == null)
                 return NotFound();
@@ -104,9 +107,10 @@ namespace CleanArchitecture.WebUI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _productService.Remove(id);
+            await _productService.RemoveAsync(id);
 
             return Ok();
         }
