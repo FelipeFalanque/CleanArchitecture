@@ -25,5 +25,67 @@ namespace CleanArchitecture.WebUI.Controllers
 
             return View(usersVM);
         }
+
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            var user = await _userService.GetUsersByIdAsync(id);
+
+            if (user == null)
+                return NotFound();
+
+            var claimsUser = await _userService.GetClaimsByIdUserAsync(user);
+            var rolesUser = await _userService.GetRolesByIdUserAsync(user);
+
+            var claims = await _userService.GetClaimsAsync();
+            var roles = await _userService.GetRolesAsync();
+
+            var userVM = new UserViewModel(user.Id, user.Name, user.Email, user.UserName);
+            userVM.Roles.AddRange(roles.Select(r => new RoleViewModel() { Name = r, Has = false }));
+            userVM.Claims.AddRange(claims.Select(c => new ClaimViewModel() { Name = c, Has = false }));
+
+            if (rolesUser != null && rolesUser.Count() > 0)
+                foreach (var role in rolesUser)
+                    userVM.Roles.First(r => r.Name == role).Has = true;
+
+            if (claimsUser != null && claimsUser.Count() > 0)
+                foreach (var claim in claimsUser)
+                    userVM.Claims.First(c => c.Name == claim.Value).Has = true;
+
+            return View(userVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserViewModel userVM)
+        {
+            if (ModelState.IsValid)
+            {
+                //await _productService.UpdateAsync(product);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(userVM);
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            var user = await _userService.GetUsersByIdAsync(id);
+            var claims = await _userService.GetClaimsByIdUserAsync(user);
+            var roles = await _userService.GetRolesByIdUserAsync(user);
+
+            if (user == null)
+                return NotFound();
+
+            ViewBag.Claims = claims;
+            ViewBag.Roles = roles;
+
+            return View(new UserViewModel(user.Id, user.Name, user.Email, user.UserName));
+        }
     }
 }

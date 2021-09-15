@@ -1,0 +1,75 @@
+﻿@model UserViewModel
+
+<h3>Edit Product</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-6">
+                    <div class="card text-white bg-primary">
+                        <div class="card-header">Claims</div>
+                        <div class="card-body">
+                            @for (int i = 0; i < Model.Claims.Count(); i++)
+                            {
+                                <div class="form-check">
+                                    <input asp-for="Claims[i].Has" class="form-check-input">
+                                    <input type="hidden" asp-for="Claims[i].Name">
+                                    <label class="form-check-label">@Model.Claims[i].Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">Roles</div>
+                        <div class="card-body">
+                            @for (int i = 0; i < Model.Roles.Count(); i++)
+                            {
+                                <div class="form-check">
+                                    <input asp-for="Roles[i].Has" class="form-check-input">
+                                    <input type="hidden" asp-for="Roles[i].Name">
+                                    <label class="form-check-label">@Model.Roles[i].Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-sm btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
