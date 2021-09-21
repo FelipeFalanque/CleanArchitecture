@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Infra.Data.Identity.Interfaces;
+using CleanArchitecture.WebUI.Helpers.Extensions;
 using CleanArchitecture.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,9 +12,12 @@ namespace CleanArchitecture.WebUI.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthenticate _authentication;
-        public AccountController(IAuthenticate authentication)
+        private readonly IUserService _userService;
+
+        public AccountController(IAuthenticate authentication, IUserService userService)
         {
             _authentication = authentication;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -32,6 +36,11 @@ namespace CleanArchitecture.WebUI.Controllers
 
             if (result.Item1)
             {
+                var user = await _userService.GetUsersByIdAsync(User.GetUserId());
+
+                if (user != null)
+                    HttpContext.Items.Add("NameUser", user.Name);
+
                 if (string.IsNullOrEmpty(model.ReturnUrl))
                 {
                     return RedirectToAction("Index", "Home");

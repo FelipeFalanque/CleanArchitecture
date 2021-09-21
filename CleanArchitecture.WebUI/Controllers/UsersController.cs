@@ -2,8 +2,6 @@
 using CleanArchitecture.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -62,7 +60,21 @@ namespace CleanArchitecture.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                //await _productService.UpdateAsync(product);
+                var user = await _userService.GetUsersByIdAsync(userVM.Id);
+
+                if (user == null)
+                    return NotFound();
+
+                user.UserName = userVM.UserName;
+                user.Name = userVM.Name;
+
+                await _userService.ClearUserAsync(user);
+                await _userService.SaveUserAsync(user);
+
+                var claims = userVM.Claims.Where(c => c.Has).Select(i => i.Name).ToList();
+                var roles = userVM.Roles.Where(c => c.Has).Select(i => i.Name).ToList();
+
+                await _userService.AddRolesAndClaimsUserAsync(user, roles, claims);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -86,6 +98,25 @@ namespace CleanArchitecture.WebUI.Controllers
             ViewBag.Roles = roles;
 
             return View(new UserViewModel(user.Id, user.Name, user.Email, user.UserName));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetPassword(string id, string password)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            var user = await _userService.GetUsersByIdAsync(id);
+
+            if (user == null)
+                return NotFound();
+
+            var result = await _userService.SetPasswordAsync(user, password);
+
+            if (result.Item2 != null && result.Item2.Length > 0)
+                return Problem(string.Join("," ,result.Item2));
+
+            return Ok();
         }
     }
 }

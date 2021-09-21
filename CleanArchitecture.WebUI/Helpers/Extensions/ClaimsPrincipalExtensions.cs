@@ -12,5 +12,9 @@ namespace CleanArchitecture.WebUI.Helpers.Extensions
 
             return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
+
+        /// Use in Controller
+        /// var idUser = User.GetUserId();
+        ///
     }
 }

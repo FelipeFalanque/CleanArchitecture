@@ -20,5 +20,13 @@ namespace CleanArchitecture.Infra.Data.Identity.Interfaces
         Task<IEnumerable<string>> GetRolesAsync();
 
         Task<IEnumerable<string>> GetClaimsAsync();
+
+        Task ClearUserAsync(ApplicationUser user);
+
+        Task SaveUserAsync(ApplicationUser user);
+
+        Task AddRolesAndClaimsUserAsync(ApplicationUser user, IList<string> roles, IList<string> claims);
+
+        Task<Tuple<bool, string[]>> SetPasswordAsync(ApplicationUser user, string newPassword);
     }
 }
