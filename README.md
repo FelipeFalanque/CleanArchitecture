@@ -5,6 +5,6 @@ no desenvolvimento do projeto utilizou-se a .NET 5.0 / in the development of the
 
 Mais detalhes do projeto em breve / More project details coming soon 
 
-![alt text](https://github.com/FelipeFalanque/CleanArchitecture/blob/main/Image#01.png?raw=true)
+![alt text](https://github.com/FelipeFalanque/CleanArchitecture/blob/main/Image01.png?raw=true)
 
-![alt text](https://github.com/FelipeFalanque/CleanArchitecture/blob/main/Image#02.png?raw=true)
+![alt text](https://github.com/FelipeFalanque/CleanArchitecture/blob/main/Image02.png?raw=true)
